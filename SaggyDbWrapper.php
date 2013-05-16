@@ -2,25 +2,25 @@
 // Database wrapper using php
 
 interface DbWrapper {
-    public function getInstance(string $hostName, string $userName, string $password, string $databaseName);
+    public function getInstance($hostName, $userName, $password, $databaseName);
 
-    public function select(array $Fields);
+    public function select($Fields);
 
-    public function from(array $tableName);
+    public function from($tableName);
 
-    public function where(array $conditions);
+    public function where($conditions);
 
-    public function  limit(integer $limit, integer $offset);
+    public function  limit($limit, $offset);
 
-    public function  orderBy(string $fieldName, $enum);
+    public function  orderBy($fieldName, $enum);
 
     public function get();
 
-    public function query(string $query);
+    public function query($query);
 
-    public function save(string $tableName, array $setParameters, array $conditions);
+    public function save($tableName, $setParameters, $conditions);
 
-    public function delete(string $tableName, array $conditions);
+    public function delete($tableName, $conditions);
 }
 
 class SaggyDbWrapper implements DbWrapper {
@@ -28,64 +28,46 @@ class SaggyDbWrapper implements DbWrapper {
     private $userName;
     private $password;
     private $databaseName;
-    private $dbo;
-
-    function _construct(string $hostName, string $userName, string $password, string $databaseName) {
+    private $pdo;
+    function __construct($hostName, $userName, $password,$databaseName) {
         $this->getInstance($hostName, $userName, $password, $databaseName);
         return $this;
     }
 
-    public function getInstance(string $hostName, string $userName, string $password, string $databaseName) {
+    public function getInstance($hostName, $userName, $password, $databaseName) {
 
         $this->hostName = $hostName;
         $this->userName = $userName;
         $this->password = $password;
         $this->databaseName = $databaseName;
-
-        if(!$this->check('instanceParams')){
-            echo "Sorry you should enter Host Name , User Name , Password , Database Name";
-            return 0;
-        }git
         $this->getDbObj();
-
         return 1;
 
     }
 
-    public function check(string $checkStr){
-        switch($checkStr){
-            case 'instanceParams':
-                if($this->hostName  && $this->userName && $this->password && $this->databaseName)
-                    return true;
-                else
-                    return false;
-                break;
-        }
-    }
 
     public function getDbObj(){
-        print "Hii";
-        $dbo = new PDO("mysql:host=".$this->hostName.";dbname=".$this->databaseName.";",$this->userName,$this->password);
+        $pdo = new PDO("mysql:host=".$this->hostName.";dbname=".$this->databaseName.";",$this->userName,$this->password);
+        $this->pdo = $pdo;
+    }
+
+    public function select($Fields){
 
     }
 
-    public function select(array $Fields){
+    public function from($tableName){
 
     }
 
-    public function from(array $tableName){
+    public function where($conditions){
 
     }
 
-    public function where(array $conditions){
+    public function  limit($limit, $offset){
 
     }
 
-    public function  limit(integer $limit, integer $offset){
-
-    }
-
-    public function  orderBy(string $fieldName, $enum = "ASC"){
+    public function  orderBy($fieldName, $enum = "ASC"){
 
     }
 
@@ -93,15 +75,15 @@ class SaggyDbWrapper implements DbWrapper {
 
     }
 
-    public function query(string $query){
+    public function query($query){
 
     }
 
-    public function save(string $tableName, array $setParameters, array $conditions){
+    public function save($tableName, $setParameters, $conditions){
 
     }
 
-    public function delete(string $tableName, array $conditions){
+    public function delete($tableName, $conditions){
 
     }
 }
