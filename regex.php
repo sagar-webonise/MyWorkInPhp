@@ -17,4 +17,9 @@ print $str."\n";
 }else{
     echo "sorry invalid string";
 }
+
+
+$testreg = "my name is sagar";
+$val = preg_match('/[\s[A-Za-z0-9]*\s[A-Za-z0-9]*\s]*/',$testreg,$matchhh);
+print print_r($matchhh);
 ?>

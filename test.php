@@ -2,8 +2,11 @@
 
 require_once "SaggyDbWrapper.php";
 
-$dbObj = new SaggyDbWrapper('localhost','root','webonise6186','tta-cms');
-$dbObj->select(array('name','email'));
-$dbObj->from('users');
+$dbObj = SaggyDbWrapper::getINstance();
+$result = $dbObj->select(array('email'))
+->from('users')
+->where(array('first_name'=>'sagar','last_name'=>'shirsath','gender'=>'m'))
+->get();
+print_r($result);
 ?>
 
