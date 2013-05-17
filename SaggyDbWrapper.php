@@ -1,10 +1,10 @@
 <?php
-// Database wrapper using php
+// Database{Mysql} wrapper using php
 
 interface DbWrapper {
     public function getInstance($hostName, $userName, $password, $databaseName);
 
-    public function select($Fields);
+    public function select($fields);
 
     public function from($tableName);
 
@@ -29,6 +29,7 @@ class SaggyDbWrapper implements DbWrapper {
     private $password;
     private $databaseName;
     private $pdo;
+    private $query;
     function __construct($hostName, $userName, $password,$databaseName) {
         $this->getInstance($hostName, $userName, $password, $databaseName);
         return $this;
@@ -41,7 +42,6 @@ class SaggyDbWrapper implements DbWrapper {
         $this->password = $password;
         $this->databaseName = $databaseName;
         $this->getDbObj();
-        return 1;
 
     }
 
@@ -49,15 +49,36 @@ class SaggyDbWrapper implements DbWrapper {
     public function getDbObj(){
         $pdo = new PDO("mysql:host=".$this->hostName.";dbname=".$this->databaseName.";",$this->userName,$this->password);
         $this->pdo = $pdo;
-    }
-
-    public function select($Fields){
 
     }
 
-    public function from($tableName){
+    public function select($fields='*'){
+
+        $fieldsString = $fields;
+        if(is_array($fields)){
+            $fieldsString = join(",",$fields);
+        }else if($fields == null){
+            $fieldsString = '*';
+        }
+
+        $fieldsString = "select ".$fieldsString." ";
+        $this->query = $fieldsString;
 
     }
+
+    public function from($tableNames=null){
+        $tablesString = $tableNames;
+        if(is_array($tableNames)){
+            $tablesString = join(",",$tableNames);
+        }else if($tableNames == null){
+            $tablesString = '';
+        }
+
+        $tablesString = "from ".$tablesString." ";
+        $this->query .= $tablesString;
+
+    }
+
 
     public function where($conditions){
 
